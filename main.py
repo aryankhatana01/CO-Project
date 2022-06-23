@@ -49,4 +49,10 @@ for command in commands:
         zeroes = 11-len(r)
         zeroes = "0"*zeroes
         ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="hlt":
+        a = opcode["hlt"]
+        zeroes = 11
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes)
 print(ans)
