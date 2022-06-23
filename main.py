@@ -21,6 +21,7 @@ for command in commands:
             a = opcode["mov2"]
             r = registers[instruction[1]] + registers[instruction[2]]
             zeroes = 11-len(r)
+            zeroes = "0"*zeroes
             ans.append(a+zeroes+r)
         else:
             a = opcode["mov1"]
@@ -34,4 +35,18 @@ for command in commands:
             # print(type(im))
             # print(z)
             ans.append(a+r+zeroes+im)
+
+    elif instruction[0]=="add":
+        a = opcode["add"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="mul":
+        a = opcode["mul"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
 print(ans)
