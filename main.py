@@ -127,3 +127,4 @@ else:
             ans.append(a+r+x)
             
     print(ans)
+#print ans
