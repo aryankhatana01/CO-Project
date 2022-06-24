@@ -1,9 +1,9 @@
 var x
-mov R1 $100
 mov R2 $100
-sub R3 R1 R2
-st R3 X
-and R3 R1 R2
+mov R2 $100
+sub R0 R1 R2
+st R8 X
+and R3 R1 R7
 or R2 R1 R3
 not R2 R3
 cmp R6 R0
