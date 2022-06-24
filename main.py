@@ -125,4 +125,5 @@ else:
             d = randomaddress()
             x = d[instruction[2]]
             ans.append(a+r+x)
+            
     print(ans)
