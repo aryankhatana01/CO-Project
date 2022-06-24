@@ -1,5 +1,5 @@
 var x
-mov R1 $100
+mov R1 $10000000000000
 mov R2 $100
 sub R3 R1 R2
 st R3 X

@@ -35,10 +35,14 @@ else:
                 im = decimalToBinary(int(num))
                 im = str(im)
                 zeroes = 8-len(im)
-                zeroes = "0"*zeroes
-                # print(type(im))
-                # print(z)
-                ans.append(a+r+zeroes+im)
+                if zeroes < 0:
+                    print("Error: number is too large")
+                    break
+                else:
+                    zeroes = "0"*zeroes
+                    # print(type(im))
+                    # print(z)
+                    ans.append(a+r+zeroes+im)
 
         elif instruction[0]=="add":
             a = opcode["add"]
@@ -82,10 +86,14 @@ else:
             im = decimalToBinary(int(num))
             im = str(im)
             zeroes = 8-len(im)
-            zeroes = "0"*zeroes
-            # print(type(im))
-            # print(z)
-            ans.append(a+r+zeroes+im)
+            if zeroes < 0:
+                print("Error: number is too large")
+                break
+            else:
+                zeroes = "0"*zeroes
+                # print(type(im))
+                # print(z)
+                ans.append(a+r+zeroes+im)
         
         elif instruction[0]=="rs":
             a = opcode["rs"]
@@ -95,10 +103,14 @@ else:
             im = decimalToBinary(int(num))
             im = str(im)
             zeroes = 8-len(im)
-            zeroes = "0"*zeroes
-            # print(type(im))
-            # print(z)
-            ans.append(a+r+zeroes+im)
+            if zeroes < 0:
+                print("Error: number is too large")
+                break
+            else:
+                zeroes = "0"*zeroes
+                # print(type(im))
+                # print(z)
+                ans.append(a+r+zeroes+im)
         
         elif instruction[0]=="xor":
             a = opcode["xor"]
