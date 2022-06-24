@@ -172,6 +172,8 @@ else:
         elif instruction[0]=="or":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
+                error=1
+                break
             a=opcode["or"]
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes="0"*2
