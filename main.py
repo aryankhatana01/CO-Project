@@ -125,6 +125,26 @@ else:
             d = randomaddress()
             x = d[instruction[2]]
             ans.append(a+r+x)
+        elif instruction[0]=="or":
+            a=opcode["or"]
+            r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+            zeroes="0"*2
+            ans.append(a+zeroes+r)
+        elif instruction[0]=="and":
+            a=opcode["and"]
+            r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+            zeroes="0"*2
+            ans.append(a+zeroes+r)
+        elif instruction[0]=="not":
+            a=opcode["not"]
+            r=registers[instruction[1]] + registers[instruction[2]]
+            zeroes="0"*5
+            ans.append(a+zeroes+r)
+        elif instruction[0]=="cmp":
+            a=opcode["cmp"]
+            r=registers[instruction[1]] + registers[instruction[2]]
+            zeroes="0"*5
+            ans.append(a+zeroes+r)            
             
     print(ans)
-#print ans
+
