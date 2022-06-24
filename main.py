@@ -1,6 +1,7 @@
 import math
 import sys
 from opcodes_dict import opcode, registers
+from randomAddress import randomaddress
 
 def decimalToBinary(n):
     return bin(n).replace("0b", "")
@@ -102,4 +103,11 @@ for command in commands:
         zeroes = 11-len(r)
         zeroes = "0"*zeroes
         ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="st":
+        a = opcode["st"]
+        r = registers[instruction[1]]
+        d = randomaddress()
+        x = d[instruction[2]]
+        ans.append(a+r+x)
 print(ans)
