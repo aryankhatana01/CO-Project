@@ -37,6 +37,13 @@ var_addresses = {}
 #         reg_states[reg_[2]] = s
 #         return k, s
 
+op_list_valid = [key for key in opcode.keys()]
+# print(op_list_valid)
+def if_label(instruction):
+    if instruction[-1] == ":":
+        return True
+    return False
+
 total_var_ins = 0
 for c in commands:
     instruction = c.split(' ')
@@ -45,11 +52,24 @@ for c in commands:
 
 what_to_add = 0
 
+labels = []
+
+for command in commands:
+    instruction = command.split(' ')
+    if if_label(instruction[0])==True:
+        labels.append(instruction[0:-1])
+
 if commands[-1] != "hlt":
     print("hlt not being used as the last instruction")
 else:
     for command in commands:
         instruction = command.split(' ')
+        if (if_label(instruction[0])==False):
+            if (instruction[0] not in op_list_valid):
+                print(instruction[0])
+                error=1
+                print("Error: instruction not valid")
+                break
         if instruction[0]=="mov":
             if instruction[2] in reg:
                 if (instruction[1] not in reg) or (instruction[2] not in reg):
