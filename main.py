@@ -12,7 +12,7 @@ error=0
 
 # commands = []
 with open("Input.txt", 'r') as f:
-    commands = f.read().splitlines() 
+    commands = f.read().splitlines()
 # print(opcode)
 # print(commands)
 ans = []
@@ -200,6 +200,7 @@ else:
             # d = randomaddress()
             x = var_addresses[instruction[2]]
             ans.append(a+r+x)
+            
         elif instruction[0]=="or":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
@@ -209,6 +210,7 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes="0"*2
             ans.append(a+zeroes+r)
+
         elif instruction[0]=="and":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
@@ -218,6 +220,7 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes="0"*2
             ans.append(a+zeroes+r)
+
         elif instruction[0]=="not":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print("Error: register not valid")
@@ -227,6 +230,7 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
             ans.append(a+zeroes+r)
+
         elif instruction[0]=="cmp":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print("Error: register not valid")
@@ -236,6 +240,7 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
             ans.append(a+zeroes+r) 
+
         elif instruction[0]=="var":
             instruction = instruction[1:]
             for var in instruction:
