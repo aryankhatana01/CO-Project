@@ -1,4 +1,5 @@
 import math
+from msvcrt import open_osfhandle
 import sys
 from opcodes_dict import opcode, registers
 from randomAddress import randomaddress
@@ -205,7 +206,44 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
             ans.append(a+zeroes+r)            
-            
+                        
+        # elif instruction[0]=="jmp":
+        #     a=opcode["jmp"]
+        #     d1=d
+        #     zeroes=11-len(d1)
+        #     z=zeroes
+        #     ans.append(a+z+d1)
+
+        # elif instruction[0]=="jlt":
+        #     # if (Flag=L!=true):
+        #     #     print("The conditon is not satisfied")
+        #     #     break
+        #     a=opcode["jlt"]
+        #     d1=d
+        #     zeroes=11-len(d1)
+        #     z=zeroes
+        #     ans.append(a+z+d1)
+        
+        # elif instruction[0]=="jgt":
+        #     # if (Flagg = G != True):
+        #     #     print("The condition is not satisfied")
+        #     #     break
+        #     a=opcode["jgt"]
+        #     d1=d
+        #     zeroes=11-len(d1)
+        #     z=zeroes
+        #     ans.append(a+z+d1)
+        
+        # elif instruction["je"]:
+        #     # if (Flag =E != True):
+        #     #     print("The condition is not satisfied")
+        #     #     break
+        #     a=opcode["je"]
+        #     d1=d
+        #     zeroes=11-len(d1)
+        #     z=zeroes
+        #     print(a+z+d1)
+
     if error!=1:
         print(ans)
 
