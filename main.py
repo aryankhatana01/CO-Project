@@ -16,6 +16,8 @@ def if_label(instruction):
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
 error=0
 
+flg = 0
+
 # commands = []
 with open("Input.txt", 'r') as f:
     commands = f.read().splitlines()
@@ -107,6 +109,8 @@ else:
                 if (instruction[1] not in reg):
                     print("Error: register not valid")
                     error=1
+                    if error > 1:
+                        flg = flg + 1
                     break
                 a = opcode["mov1"]
                 r = registers[instruction[1]]
@@ -130,6 +134,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["add"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -141,6 +147,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["mul"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -158,6 +166,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["sub"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -169,6 +179,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["div"]
             r = registers[instruction[1]] + registers[instruction[2]]
@@ -180,6 +192,8 @@ else:
             if (instruction[1] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["ls"]
             r = registers[instruction[1]]
@@ -191,6 +205,8 @@ else:
             if zeroes < 0:
                 print("Error: number is too large")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             else:
                 zeroes = "0"*zeroes
@@ -202,6 +218,8 @@ else:
             if (instruction[1] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["rs"]
             r = registers[instruction[1]]
@@ -224,6 +242,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["xor"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -235,6 +255,8 @@ else:
             if (instruction[1] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a = opcode["st"]
             r = registers[instruction[1]]
@@ -249,6 +271,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a=opcode["or"]
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -259,6 +283,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a=opcode["and"]
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -269,6 +295,8 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a=opcode["not"]
             r=registers[instruction[1]] + registers[instruction[2]]
@@ -279,11 +307,14 @@ else:
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print("Error: register not valid")
                 error=1
+                if error > 1:
+                    flg = flg + 1
                 break
             a=opcode["cmp"]
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
             ans.append(a+zeroes+r)
+            
         elif instruction[0]=="jmp":
             a=opcode["jmp"]
             x=decimalToBinary(addresses[instruction[1]])
