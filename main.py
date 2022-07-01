@@ -1,5 +1,4 @@
 import math
-from msvcrt import open_osfhandle
 import sys
 from opcodes_dict import opcode, registers
 from randomAddress import randomaddress
@@ -7,6 +6,12 @@ from register_states import reg_states
 
 def decimalToBinary(n):
     return bin(n).replace("0b", "")
+
+# print(op_list_valid)
+def if_label(instruction):
+    if instruction[-1] == ":":
+        return True
+    return False    
 
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
 error=0
@@ -17,9 +22,24 @@ with open("Input.txt", 'r') as f:
 # print(opcode)
 # print(commands)
 ans = []
+count=0
 # print(commands)
+addresses = {}
 
-var_addresses = {}
+for c in commands:
+    instruction=c.split()
+    if instruction[0]=="var":
+        addresses[instruction[1]]=0
+    elif if_label(instruction[0])==True:
+        string=instruction[0]
+        addresses[string[0:len(string)-1]]=0
+        count+=1
+    else:
+        count+=1
+for ele in addresses:
+    addresses[ele]=count
+    count+=1                
+
 
 # def add(reg_):
 #     if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
@@ -38,19 +58,39 @@ var_addresses = {}
 #         reg_states[reg_[2]] = s
 #         return k, s
 
-total_var_ins = 0
-for c in commands:
-    instruction = c.split(' ')
-    if instruction[0] == "var":
-        total_var_ins+=1
+op_list_valid = [key for key in opcode.keys()]
+# # print(op_list_valid)
+# def if_label(instruction):
+#     if instruction[-1] == ":":
+#         return True
+#     return False
 
-what_to_add = 0
+# total_var_ins = 0
+# for c in commands:
+#     instruction = c.split(' ')
+#     if instruction[0] == "var":
+#         total_var_ins+=1
+
+
+
+labels = []
+
+for command in commands:
+    instruction = command.split(' ')
+    if if_label(instruction[0])==True:
+        labels.append(instruction[0:-1])
 
 if commands[-1] != "hlt":
     print("hlt not being used as the last instruction")
 else:
     for command in commands:
         instruction = command.split(' ')
+        # if (if_label(instruction[0])==False):
+        #     if (instruction[0] not in op_list_valid):
+        #         print(instruction[0])
+        #         error=1
+        #         print("Error: instruction not valid")
+        #         break
         if instruction[0]=="mov":
             if instruction[2] in reg:
                 if (instruction[1] not in reg) or (instruction[2] not in reg):
@@ -199,8 +239,11 @@ else:
             a = opcode["st"]
             r = registers[instruction[1]]
             # d = randomaddress()
-            x = var_addresses[instruction[2]]
-            ans.append(a+r+x)
+            # x = var_addresses[instruction[2]]
+            x=decimalToBinary(addresses[instruction[2]])
+            zeroes=8-len(x)
+            zeroes="0"*zeroes
+            ans.append(a+r+zeroes+x)
             
         elif instruction[0]=="or":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
@@ -240,54 +283,43 @@ else:
             a=opcode["cmp"]
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
-            ans.append(a+zeroes+r)            
-                        
-        # elif instruction[0]=="jmp":
-        #     a=opcode["jmp"]
-        #     d1=d
-        #     zeroes=11-len(d1)
-        #     z=zeroes
-        #     ans.append(a+z+d1)
+            ans.append(a+zeroes+r)
+        elif instruction[0]=="jmp":
+            a=opcode["jmp"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x) 
 
-        # elif instruction[0]=="jlt":
-        #     # if (Flag=L!=true):
-        #     #     print("The conditon is not satisfied")
-        #     #     break
-        #     a=opcode["jlt"]
-        #     d1=d
-        #     zeroes=11-len(d1)
-        #     z=zeroes
-        #     ans.append(a+z+d1)
-        
-        # elif instruction[0]=="jgt":
-        #     # if (Flagg = G != True):
-        #     #     print("The condition is not satisfied")
-        #     #     break
-        #     a=opcode["jgt"]
-        #     d1=d
-        #     zeroes=11-len(d1)
-        #     z=zeroes
-        #     ans.append(a+z+d1)
-        
-        # elif instruction["je"]:
-        #     # if (Flag =E != True):
-        #     #     print("The condition is not satisfied")
-        #     #     break
-        #     a=opcode["je"]
-        #     d1=d
-        #     zeroes=11-len(d1)
-        #     z=zeroes
-        #     print(a+z+d1)
+        elif instruction[0]=="jlt":
+            a=opcode["jlt"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
 
-            ans.append(a+zeroes+r) 
+        elif instruction [0]=="jgt":
+            a=opcode["jgt"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
 
-        elif instruction[0]=="var":
-            instruction = instruction[1:]
-            for var in instruction:
-                binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
-                var_addresses[var] = binary_address
-                what_to_add += 1
+        elif instruction[0]=="je":
+            a=opcode["je"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
+
+        # elif instruction[0]=="var":
+        #     instruction = instruction[1:]
+        #     for var in instruction:
+                # binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
+                # var_addresses[var] = binary_address
+                # what_to_add += 1
+
             
     if error!=1:
         print(ans)
-
+        print(addresses)

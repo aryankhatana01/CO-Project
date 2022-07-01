@@ -1,6 +1,9 @@
-var x
+var abc
+var y
+mov R4 $10
 mov R2 $100
 mov R1 $100
 add R1 R2 R3
-st R3 x
+st R3 abc
+jmp y
 hlt
