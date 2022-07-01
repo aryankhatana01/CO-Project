@@ -25,13 +25,14 @@ ans = []
 count=0
 # print(commands)
 addresses = {}
-
+labels = []
 for c in commands:
     instruction=c.split()
     if instruction[0]=="var":
         addresses[instruction[1]]=0
     elif if_label(instruction[0])==True:
         string=instruction[0]
+        labels.append(string[0:len(string)-1])
         addresses[string[0:len(string)-1]]=0
         count+=1
     else:
@@ -73,12 +74,12 @@ op_list_valid = [key for key in opcode.keys()]
 
 
 
-labels = []
+# labels = []
 
-for command in commands:
-    instruction = command.split(' ')
-    if if_label(instruction[0])==True:
-        labels.append(instruction[0:-1])
+# for command in commands:
+#     instruction = command.split(' ')
+#     if if_label(instruction[0])==True:
+#         labels.append(instruction[0:-1])
 
 if commands[-1] != "hlt":
     print("hlt not being used as the last instruction")
