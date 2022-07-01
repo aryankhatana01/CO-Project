@@ -7,6 +7,12 @@ from register_states import reg_states
 def decimalToBinary(n):
     return bin(n).replace("0b", "")
 
+# print(op_list_valid)
+def if_label(instruction):
+    if instruction[-1] == ":":
+        return True
+    return False    
+
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
 error=0
 
@@ -16,9 +22,24 @@ with open("Input.txt", 'r') as f:
 # print(opcode)
 # print(commands)
 ans = []
+count=0
 # print(commands)
+addresses = {}
 
-var_addresses = {}
+for c in commands:
+    instruction=c.split()
+    if instruction[0]=="var":
+        addresses[instruction[1]]=0
+    elif if_label(instruction[0])==True:
+        string=instruction[0]
+        addresses[string[0:len(string)-1]]=0
+        count+=1
+    else:
+        count+=1
+for ele in addresses:
+    addresses[ele]=count
+    count+=1                
+
 
 # def add(reg_):
 #     if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
@@ -38,19 +59,19 @@ var_addresses = {}
 #         return k, s
 
 op_list_valid = [key for key in opcode.keys()]
-# print(op_list_valid)
-def if_label(instruction):
-    if instruction[-1] == ":":
-        return True
-    return False
+# # print(op_list_valid)
+# def if_label(instruction):
+#     if instruction[-1] == ":":
+#         return True
+#     return False
 
-total_var_ins = 0
-for c in commands:
-    instruction = c.split(' ')
-    if instruction[0] == "var":
-        total_var_ins+=1
+# total_var_ins = 0
+# for c in commands:
+#     instruction = c.split(' ')
+#     if instruction[0] == "var":
+#         total_var_ins+=1
 
-what_to_add = 0
+
 
 labels = []
 
@@ -215,11 +236,18 @@ else:
                 print("Error: register not valid")
                 error=1
                 break
+            if(instruction[2] not in addresses.keys()):
+                print("Error: variable not defined")
+                error=1
+                break
             a = opcode["st"]
             r = registers[instruction[1]]
             # d = randomaddress()
-            x = var_addresses[instruction[2]]
-            ans.append(a+r+x)
+            # x = var_addresses[instruction[2]]
+            x=decimalToBinary(addresses[instruction[2]])
+            zeroes=8-len(x)
+            zeroes="0"*zeroes
+            ans.append(a+r+zeroes+x)
             
         elif instruction[0]=="or":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
@@ -259,15 +287,22 @@ else:
             a=opcode["cmp"]
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
-            ans.append(a+zeroes+r) 
+            ans.append(a+zeroes+r)
+        elif instruction[0]=="jmp":
+            a=opcode["jmp"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)     
 
-        elif instruction[0]=="var":
-            instruction = instruction[1:]
-            for var in instruction:
-                binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
-                var_addresses[var] = binary_address
-                what_to_add += 1
+        # elif instruction[0]=="var":
+        #     instruction = instruction[1:]
+        #     for var in instruction:
+                # binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
+                # var_addresses[var] = binary_address
+                # what_to_add += 1
+
             
     if error!=1:
         print(ans)
-
+        # print(addresses)
