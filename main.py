@@ -546,7 +546,7 @@ else:
             ans.append(a+zeroes+x)
         
         elif instruction[0][-1]==":":
-            get_label_address(instruction[1:])
+            get_label_address(i, instruction[1:])
             
     if error!=1:
         print(ans)
