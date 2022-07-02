@@ -13,7 +13,7 @@ def if_label(instruction):
         return True
     return False    
 
-reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
+reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6","FLAGS"]
 error=0
 
 # commands = []
@@ -28,7 +28,7 @@ addresses = {}
 labels = []
 for c in commands:
     instruction=c.split()
-    if instruction[0]=="var":
+    if instruction[0]=="var" and len(instruction)>1:
         addresses[instruction[1]]=0
     elif if_label(instruction[0])==True:
         string=instruction[0]
@@ -78,7 +78,7 @@ for ele in commands_:
     l = ele.split(' ')
     l = list(filter(('').__ne__, l))
     commands.append(" ".join(l))
-# print(commands)
+print(commands)
 
 # labels = []
 
@@ -126,7 +126,7 @@ def get_label_address(i, instruction):
         elif instruction[0]=="add":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
-                error=1
+                error=1    
             a = opcode["add"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes = 11-len(r)
@@ -322,6 +322,10 @@ if commands[-1] != "hlt":
 else:
     for i, command in enumerate(commands):
         instruction = command.split(' ')
+        # if len(instruction)==1 and if_label(instruction[0])==False:
+        #     print(f"Error@Line{i+1}: instruction not valid")
+        #     error=1
+        #     break
         if (if_label(instruction[0])==False):
             if (instruction[0] not in op_list_valid):
                 print(instruction[0])
@@ -368,6 +372,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a = opcode["add"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes = 11-len(r)
@@ -377,6 +385,10 @@ else:
         elif instruction[0]=="mul":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
+                error=1
+                break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
                 error=1
                 break
             a = opcode["mul"]
@@ -396,6 +408,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a = opcode["sub"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes = 11-len(r)
@@ -407,6 +423,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a = opcode["div"]
             r = registers[instruction[1]] + registers[instruction[2]]
             zeroes = 11-len(r)
@@ -416,6 +436,10 @@ else:
         elif instruction[0]=="ls":
             if (instruction[1] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
+                error=1
+                break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
                 error=1
                 break
             a = opcode["ls"]
@@ -440,6 +464,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a = opcode["rs"]
             r = registers[instruction[1]]
             num = instruction[2][1:]
@@ -462,6 +490,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a = opcode["xor"]
             r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes = 11-len(r)
@@ -471,6 +503,10 @@ else:
         elif instruction[0]=="st":
             if (instruction[1] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
+                error=1
+                break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
                 error=1
                 break
             if(instruction[2] not in addresses.keys()):
@@ -491,6 +527,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a=opcode["or"]
             r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
             zeroes="0"*2
@@ -499,6 +539,10 @@ else:
         elif instruction[0]=="and":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
+                error=1
+                break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
                 error=1
                 break
             a=opcode["and"]
@@ -511,6 +555,10 @@ else:
                 print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
+                error=1
+                break
             a=opcode["not"]
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
@@ -519,6 +567,10 @@ else:
         elif instruction[0]=="cmp":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
                 print(f"Error@Line{i+1}: register not valid")
+                error=1
+                break
+            if ("FLAGS" in instruction):
+                print(f"Error@Line{i+1}: illegal use of flag")
                 error=1
                 break
             a=opcode["cmp"]
@@ -580,4 +632,4 @@ else:
             
     if error!=1:
         print(ans)
-        # print(addresses)
+        print(labels)
