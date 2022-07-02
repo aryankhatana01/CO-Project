@@ -78,7 +78,7 @@ for ele in commands_:
     l = ele.split(' ')
     l = list(filter(('').__ne__, l))
     commands.append(" ".join(l))
-print(commands)
+# print(commands)
 
 # labels = []
 
@@ -87,11 +87,11 @@ print(commands)
 #     if if_label(instruction[0])==True:
 #         labels.append(instruction[0:-1])
 
-def get_label_address(instruction):
+def get_label_address(i, instruction):
     if instruction[0]=="mov":
             if instruction[2] in reg:
                 if (instruction[1] not in reg) or (instruction[2] not in reg):
-                    print("Error: register not valid")
+                    print(f"Error@Line{i+1}: register not valid")
                     error=1
                 a = opcode["mov2"]
                 r = registers[instruction[1]] + registers[instruction[2]]
@@ -101,7 +101,7 @@ def get_label_address(instruction):
                 ans.append(a+zeroes+r)
             else:
                 if (instruction[1] not in reg):
-                    print("Error: register not valid")
+                    print(f"Error@Line{i+1}: register not valid")
                     error=1
                 a = opcode["mov1"]
                 r = registers[instruction[1]]
@@ -112,7 +112,7 @@ def get_label_address(instruction):
                 im = str(im)
                 zeroes = 8-len(im)
                 if zeroes < 0:
-                    print("Error: number is too large")
+                    print(f"Error@Line{i+1}: number is too large")
                     error=1
                 else:
                     zeroes = "0"*zeroes
@@ -122,7 +122,7 @@ def get_label_address(instruction):
 
     elif instruction[0]=="add":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["add"]
         r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -132,7 +132,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="mul":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["mul"]
         r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -148,7 +148,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="sub":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["sub"]
         r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -158,7 +158,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="div":
         if (instruction[1] not in reg) or (instruction[2] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["div"]
         r = registers[instruction[1]] + registers[instruction[2]]
@@ -168,7 +168,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="ls":
         if (instruction[1] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["ls"]
         r = registers[instruction[1]]
@@ -178,7 +178,7 @@ def get_label_address(instruction):
         im = str(im)
         zeroes = 8-len(im)
         if zeroes < 0:
-            print("Error: number is too large")
+            print(f"Error@Line{i+1}: number is too large")
             error=1
         else:
             zeroes = "0"*zeroes
@@ -188,7 +188,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="rs":
         if (instruction[1] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["rs"]
         r = registers[instruction[1]]
@@ -198,7 +198,7 @@ def get_label_address(instruction):
         im = str(im)
         zeroes = 8-len(im)
         if zeroes < 0:
-            print("Error: number is too large")
+            print(f"Error@Line{i+1}: number is too large")
             error=1
         else:
             zeroes = "0"*zeroes
@@ -208,7 +208,7 @@ def get_label_address(instruction):
     
     elif instruction[0]=="xor":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a = opcode["xor"]
         r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -218,10 +218,10 @@ def get_label_address(instruction):
     
     elif instruction[0]=="st":
         if (instruction[1] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         if(instruction[2] not in addresses.keys()):
-            print("Error: variable not defined")
+            print(f"Error@Line{i+1}: variable not defined")
             error=1
         a = opcode["st"]
         r = registers[instruction[1]]
@@ -234,7 +234,7 @@ def get_label_address(instruction):
         
     elif instruction[0]=="or":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a=opcode["or"]
         r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -243,7 +243,7 @@ def get_label_address(instruction):
 
     elif instruction[0]=="and":
         if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a=opcode["and"]
         r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
@@ -252,7 +252,7 @@ def get_label_address(instruction):
 
     elif instruction[0]=="not":
         if (instruction[1] not in reg) or (instruction[2] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a=opcode["not"]
         r=registers[instruction[1]] + registers[instruction[2]]
@@ -261,7 +261,7 @@ def get_label_address(instruction):
 
     elif instruction[0]=="cmp":
         if (instruction[1] not in reg) or (instruction[2] not in reg):
-            print("Error: register not valid")
+            print(f"Error@Line{i+1}: register not valid")
             error=1
         a=opcode["cmp"]
         r=registers[instruction[1]] + registers[instruction[2]]
@@ -305,18 +305,18 @@ def get_label_address(instruction):
 if commands[-1] != "hlt":
     print("hlt not being used as the last instruction")
 else:
-    for command in commands:
+    for i, command in enumerate(commands):
         instruction = command.split(' ')
         if (if_label(instruction[0])==False):
             if (instruction[0] not in op_list_valid):
                 print(instruction[0])
                 error=1
-                print("Error: instruction not valid")
+                print(f"Error@Line{i+1}: instruction not valid")
                 break
         if instruction[0]=="mov":
             if instruction[2] in reg:
                 if (instruction[1] not in reg) or (instruction[2] not in reg):
-                    print("Error: register not valid")
+                    print(f"Error@Line{i+1}: register not valid")
                     error=1
                     break
                 a = opcode["mov2"]
@@ -327,7 +327,7 @@ else:
                 ans.append(a+zeroes+r)
             else:
                 if (instruction[1] not in reg):
-                    print("Error: register not valid")
+                    print(f"Error@Line{i+1}: register not valid")
                     error=1
                     break
                 a = opcode["mov1"]
@@ -339,7 +339,7 @@ else:
                 im = str(im)
                 zeroes = 8-len(im)
                 if zeroes < 0:
-                    print("Error: number is too large")
+                    print(f"Error@Line{i+1}: number is too large")
                     error=1
                     break
                 else:
@@ -350,7 +350,7 @@ else:
 
         elif instruction[0]=="add":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["add"]
@@ -361,7 +361,7 @@ else:
         
         elif instruction[0]=="mul":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["mul"]
@@ -378,7 +378,7 @@ else:
         
         elif instruction[0]=="sub":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["sub"]
@@ -389,7 +389,7 @@ else:
         
         elif instruction[0]=="div":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["div"]
@@ -400,7 +400,7 @@ else:
         
         elif instruction[0]=="ls":
             if (instruction[1] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["ls"]
@@ -411,7 +411,7 @@ else:
             im = str(im)
             zeroes = 8-len(im)
             if zeroes < 0:
-                print("Error: number is too large")
+                print(f"Error@Line{i+1}: number is too large")
                 error=1
                 break
             else:
@@ -422,7 +422,7 @@ else:
         
         elif instruction[0]=="rs":
             if (instruction[1] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["rs"]
@@ -433,7 +433,7 @@ else:
             im = str(im)
             zeroes = 8-len(im)
             if zeroes < 0:
-                print("Error: number is too large")
+                print(f"Error@Line{i+1}: number is too large")
                 error=1
                 break
             else:
@@ -444,7 +444,7 @@ else:
         
         elif instruction[0]=="xor":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a = opcode["xor"]
@@ -455,11 +455,11 @@ else:
         
         elif instruction[0]=="st":
             if (instruction[1] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             if(instruction[2] not in addresses.keys()):
-                print("Error: variable not defined")
+                print(f"Error@Line{i+1}: variable not defined")
                 error=1
                 break
             a = opcode["st"]
@@ -473,7 +473,7 @@ else:
             
         elif instruction[0]=="or":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a=opcode["or"]
@@ -483,7 +483,7 @@ else:
 
         elif instruction[0]=="and":
             if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a=opcode["and"]
@@ -493,7 +493,7 @@ else:
 
         elif instruction[0]=="not":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a=opcode["not"]
@@ -503,7 +503,7 @@ else:
 
         elif instruction[0]=="cmp":
             if (instruction[1] not in reg) or (instruction[2] not in reg):
-                print("Error: register not valid")
+                print(f"Error@Line{i+1}: register not valid")
                 error=1
                 break
             a=opcode["cmp"]
