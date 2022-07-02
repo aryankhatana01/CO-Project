@@ -509,41 +509,62 @@ else:
             a=opcode["cmp"]
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
-            ans.append(a+zeroes+r)
-            
+            ans.append(a+zeroes+r)  
+        
         elif instruction[0]=="jmp":
             a=opcode["jmp"]
-            x=decimalToBinary(addresses[instruction[1]])
-            zeroes=16-(len(x)+5)
-            zeroes="0"*zeroes
-            ans.append(a+zeroes+x)     
+            for value in labels:
+                lable = value
+                if (instruction[1] == lable):
+                    x=decimalToBinary(addresses[instruction[1]])
+                    zeroes=16 - (len(x)+5)
+                    zeroes="0"*zeroes
+                    ans.append(a+zeroes+x)
+                else:
+                    continue
 
+        elif instruction[0]=="jlt":
+            a=opcode["jlt"]
+            for value in labels:
+                lable = value
+                if (instruction[1] == lable):
+                    x=decimalToBinary(addresses[instruction[1]])
+                    zeroes=16 - (len(x)+5)
+                    zeroes="0"*zeroes
+                    ans.append(a+zeroes+x)
+                else:
+                    continue
+
+        elif instruction [0]=="jgt":
+            a=opcode["jgt"]
+            for value in labels:
+                lable = value
+                if (instruction[1] == lable):
+                    x=decimalToBinary(addresses[instruction[1]])
+                    zeroes=16 - (len(x)+5)
+                    zeroes="0"*zeroes
+                    ans.append(a+zeroes+x)
+                else:
+                    continue
+
+        elif instruction[0]=="je":
+            a=opcode["je"]
+            for value in labels:
+                lable = value
+                if (instruction[1] == lable):
+                    x=decimalToBinary(addresses[instruction[1]])
+                    zeroes=16 - (len(x)+5)
+                    zeroes="0"*zeroes
+                    ans.append(a+zeroes+x)
+                else:
+                    continue
+        
         # elif instruction[0]=="var":
         #     instruction = instruction[1:]
         #     for var in instruction:
                 # binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
                 # var_addresses[var] = binary_address
                 # what_to_add += 1
-        elif instruction[0]=="jlt":
-            a=opcode["jlt"]
-            x=decimalToBinary(addresses[instruction[1]])
-            zeroes=16-(len(x)+5)
-            zeroes="0"*zeroes
-            ans.append(a+zeroes+x)
-
-        elif instruction [0]=="jgt":
-            a=opcode["jgt"]
-            x=decimalToBinary(addresses[instruction[1]])
-            zeroes=16-(len(x)+5)
-            zeroes="0"*zeroes
-            ans.append(a+zeroes+x)
-
-        elif instruction[0]=="je":
-            a=opcode["je"]
-            x=decimalToBinary(addresses[instruction[1]])
-            zeroes=16-(len(x)+5)
-            zeroes="0"*zeroes
-            ans.append(a+zeroes+x)
         
         elif instruction[0][-1]==":":
             get_label_address(instruction[1:])
