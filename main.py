@@ -72,7 +72,13 @@ op_list_valid = [key for key in opcode.keys()]
 #     if instruction[0] == "var":
 #         total_var_ins+=1
 
-
+commands_ = commands.copy()
+commands = []
+for ele in commands_:
+    l = ele.split(' ')
+    l = list(filter(('').__ne__, l))
+    commands.append(" ".join(l))
+print(commands)
 
 # labels = []
 
@@ -289,6 +295,7 @@ else:
             r=registers[instruction[1]] + registers[instruction[2]]
             zeroes="0"*5
             ans.append(a+zeroes+r)
+            
         elif instruction[0]=="jmp":
             a=opcode["jmp"]
             x=decimalToBinary(addresses[instruction[1]])
@@ -302,7 +309,26 @@ else:
                 # binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
                 # var_addresses[var] = binary_address
                 # what_to_add += 1
+        elif instruction[0]=="jlt":
+            a=opcode["jlt"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
 
+        elif instruction [0]=="jgt":
+            a=opcode["jgt"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
+
+        elif instruction[0]=="je":
+            a=opcode["je"]
+            x=decimalToBinary(addresses[instruction[1]])
+            zeroes=16-(len(x)+5)
+            zeroes="0"*zeroes
+            ans.append(a+zeroes+x)
             
     if error!=1:
         print(ans)

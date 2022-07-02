@@ -1,12 +1,12 @@
-var xyz
+var     xyz
 add R0 R1 R2
-sub R0 R1 R2
+sub R0 R1    R2
 mov R0 $100
 mov R1 R2
 add R1 R2 R3
 mov R1 R5
 st R5 xyz
-loop: add R1 R2 R3
+loop:      add R1 R2 R3
 mul R6 R1 R1
 div R1 R3
 rs R1 $2
