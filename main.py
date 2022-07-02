@@ -87,6 +87,221 @@ print(commands)
 #     if if_label(instruction[0])==True:
 #         labels.append(instruction[0:-1])
 
+def get_label_address(instruction):
+    if instruction[0]=="mov":
+            if instruction[2] in reg:
+                if (instruction[1] not in reg) or (instruction[2] not in reg):
+                    print("Error: register not valid")
+                    error=1
+                a = opcode["mov2"]
+                r = registers[instruction[1]] + registers[instruction[2]]
+                reg_states[registers[instruction[2]]] = reg_states[instruction[1]]
+                zeroes = 11-len(r)
+                zeroes = "0"*zeroes
+                ans.append(a+zeroes+r)
+            else:
+                if (instruction[1] not in reg):
+                    print("Error: register not valid")
+                    error=1
+                a = opcode["mov1"]
+                r = registers[instruction[1]]
+                num = instruction[2][1:]
+                reg_states[instruction[1]] = num
+                # print(num)
+                im = decimalToBinary(int(num))
+                im = str(im)
+                zeroes = 8-len(im)
+                if zeroes < 0:
+                    print("Error: number is too large")
+                    error=1
+                else:
+                    zeroes = "0"*zeroes
+                    # print(type(im))
+                    # print(z)
+                    ans.append(a+r+zeroes+im)
+
+    elif instruction[0]=="add":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["add"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="mul":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["mul"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="hlt":
+        a = opcode["hlt"]
+        zeroes = 11
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes)
+    
+    elif instruction[0]=="sub":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["sub"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="div":
+        if (instruction[1] not in reg) or (instruction[2] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["div"]
+        r = registers[instruction[1]] + registers[instruction[2]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="ls":
+        if (instruction[1] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["ls"]
+        r = registers[instruction[1]]
+        num = instruction[2][1:]
+        # print(num)
+        im = decimalToBinary(int(num))
+        im = str(im)
+        zeroes = 8-len(im)
+        if zeroes < 0:
+            print("Error: number is too large")
+            error=1
+        else:
+            zeroes = "0"*zeroes
+            # print(type(im))
+            # print(z)
+            ans.append(a+r+zeroes+im)
+    
+    elif instruction[0]=="rs":
+        if (instruction[1] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["rs"]
+        r = registers[instruction[1]]
+        num = instruction[2][1:]
+        # print(num)
+        im = decimalToBinary(int(num))
+        im = str(im)
+        zeroes = 8-len(im)
+        if zeroes < 0:
+            print("Error: number is too large")
+            error=1
+        else:
+            zeroes = "0"*zeroes
+            # print(type(im))
+            # print(z)
+            ans.append(a+r+zeroes+im)
+    
+    elif instruction[0]=="xor":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a = opcode["xor"]
+        r = registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes = 11-len(r)
+        zeroes = "0"*zeroes
+        ans.append(a+zeroes+r)
+    
+    elif instruction[0]=="st":
+        if (instruction[1] not in reg):
+            print("Error: register not valid")
+            error=1
+        if(instruction[2] not in addresses.keys()):
+            print("Error: variable not defined")
+            error=1
+        a = opcode["st"]
+        r = registers[instruction[1]]
+        # d = randomaddress()
+        # x = var_addresses[instruction[2]]
+        x=decimalToBinary(addresses[instruction[2]])
+        zeroes=8-len(x)
+        zeroes="0"*zeroes
+        ans.append(a+r+zeroes+x)
+        
+    elif instruction[0]=="or":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a=opcode["or"]
+        r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes="0"*2
+        ans.append(a+zeroes+r)
+
+    elif instruction[0]=="and":
+        if (instruction[1] not in reg) or (instruction[2] not in reg) or (instruction[3] not in reg):
+            print("Error: register not valid")
+            error=1
+        a=opcode["and"]
+        r=registers[instruction[1]] + registers[instruction[2]] + registers[instruction[3]]
+        zeroes="0"*2
+        ans.append(a+zeroes+r)
+
+    elif instruction[0]=="not":
+        if (instruction[1] not in reg) or (instruction[2] not in reg):
+            print("Error: register not valid")
+            error=1
+        a=opcode["not"]
+        r=registers[instruction[1]] + registers[instruction[2]]
+        zeroes="0"*5
+        ans.append(a+zeroes+r)
+
+    elif instruction[0]=="cmp":
+        if (instruction[1] not in reg) or (instruction[2] not in reg):
+            print("Error: register not valid")
+            error=1
+        a=opcode["cmp"]
+        r=registers[instruction[1]] + registers[instruction[2]]
+        zeroes="0"*5
+        ans.append(a+zeroes+r)
+        
+    elif instruction[0]=="jmp":
+        a=opcode["jmp"]
+        x=decimalToBinary(addresses[instruction[1]])
+        zeroes=16-(len(x)+5)
+        zeroes="0"*zeroes
+        ans.append(a+zeroes+x)     
+
+    # elif instruction[0]=="var":
+    #     instruction = instruction[1:]
+    #     for var in instruction:
+            # binary_address = randomaddress(total_var_ins, len(commands), what_to_add)
+            # var_addresses[var] = binary_address
+            # what_to_add += 1
+    elif instruction[0]=="jlt":
+        a=opcode["jlt"]
+        x=decimalToBinary(addresses[instruction[1]])
+        zeroes=16-(len(x)+5)
+        zeroes="0"*zeroes
+        ans.append(a+zeroes+x)
+
+    elif instruction [0]=="jgt":
+        a=opcode["jgt"]
+        x=decimalToBinary(addresses[instruction[1]])
+        zeroes=16-(len(x)+5)
+        zeroes="0"*zeroes
+        ans.append(a+zeroes+x)
+
+    elif instruction[0]=="je":
+        a=opcode["je"]
+        x=decimalToBinary(addresses[instruction[1]])
+        zeroes=16-(len(x)+5)
+        zeroes="0"*zeroes
+        ans.append(a+zeroes+x)
+
 if commands[-1] != "hlt":
     print("hlt not being used as the last instruction")
 else:
@@ -329,6 +544,9 @@ else:
             zeroes=16-(len(x)+5)
             zeroes="0"*zeroes
             ans.append(a+zeroes+x)
+        
+        elif instruction[0][-1]==":":
+            get_label_address(instruction[1:])
             
     if error!=1:
         print(ans)
