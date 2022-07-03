@@ -322,10 +322,10 @@ if commands[-1] != "hlt":
 else:
     for i, command in enumerate(commands):
         instruction = command.split(' ')
-        # if len(instruction)==1 and if_label(instruction[0])==False:
-        #     print(f"Error@Line{i+1}: instruction not valid")
-        #     error=1
-        #     break
+        if len(instruction)==1 and if_label(instruction[0])==False:
+            print(f"Error@Line{i+1}: instruction not valid")
+            error=1
+            break
         if (if_label(instruction[0])==False):
             if (instruction[0] not in op_list_valid):
                 print(instruction[0])
