@@ -16,9 +16,10 @@ def if_label(instruction):
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6","FLAGS"]
 error=0
 
-# commands = []
-with open("Input.txt", 'r') as f:
-    commands = f.read().splitlines()
+commands = []
+for line in sys.stdin:
+    commands.append(line.strip())
+# print(commands)
 # print(opcode)
 # print(commands)
 ans = []
