@@ -8,6 +8,9 @@ def binaryToDecimal(n):
 def decimalToBinary(n):
     return bin(n).replace("0b", "")
 
+def DecimalToBinary(n):
+    return "{0:b}".format(int(n))
+
 # print(op_list_valid)
 def if_label(instruction):
     if instruction[-1] == ":":
@@ -47,6 +50,10 @@ flags={
 flagval=0
 pc=0
 while pc<len(commands):
+    pc_ = DecimalToBinary(int(pc))
+    zeros = "0" * (8 - len(pc_))
+    pc_ = zeros + pc_
+    print(pc_, end=" ")
     jmpflag=0
     command=commands[pc]
     opcode=command[0:5]
@@ -153,7 +160,15 @@ while pc<len(commands):
         break        
             
                 
-            
+    for k in regValue.values():
+        bin = DecimalToBinary(int(k))
+        zeros = "0" * (16 - len(bin))
+        bin = zeros + bin
+        print(bin, end=" ")
+    flg_str = "000000000000"
+    for k in flags.keys():
+        flg_str+=str(flags[k])
+    print(flg_str)
                         
     if jmpflag==0:
         pc+=1
