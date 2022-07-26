@@ -1,8 +1,12 @@
-var x
-loop:
-ld R1 x
-ld R1 loop
-
+var xyz
+add R1 R2 R3
+loop: mul R1 R2 R3
+mov R1 $1
+jmp loop
 hlt
-
-
+10000 00 000 100 101
+10000:3
+00001010
+0000000000001010
+1111100000000011
+commands[]
