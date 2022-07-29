@@ -135,7 +135,7 @@ while pc<len(commands):
             flags["G"]=1
         else:
             flags["L"]=1
-        print(flags)    
+        # print(flags)    
     elif opcode=="11111":
         zero="0"*8
         zero+=command[8:16]
@@ -189,8 +189,7 @@ while pc<len(commands):
         continue        
 
         
-
-
-
-
-
+for c in commands:
+    print(c)
+for _ in range(256-len(commands)):
+    print("0000000000000000")
