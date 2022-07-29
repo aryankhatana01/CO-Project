@@ -35,9 +35,11 @@ regValue={
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6","FLAGS"]
 error=0
 label=[]
-# commands = []
 with open("Input.txt", 'r') as f:
     commands = f.read().splitlines()
+# commands = []
+# for line in sys.stdin:
+#     commands.append(line.strip())
 # print(opcode)
 # flags={
 #     "V":0,
@@ -121,13 +123,13 @@ while pc<len(commands):
         zero+=tempaddr
         if zero not in addr.keys():
             addr[zero]=0
-        regValue[command[0:5]]=addr[zero]
+        regValue[command[5:8]]=addr[zero]
     elif opcode=="10101":
         tempaddr=command[8:16]
         zero="0"*8
         zero+=tempaddr
         
-        addr[zero]=regValue[command[0:5]]
+        addr[zero]=regValue[command[5:8]]
     elif opcode=="11110":
         if regValue[command[10:13]]==regValue[command[13:16]]:
             flags["E"]=1
