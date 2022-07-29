@@ -32,14 +32,18 @@ regValue={
     "101":0,
     "110":0,
 }
+reg_codes_l = ["000","001","010","011","100","101","110"]
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6","FLAGS"]
 error=0
 label=[]
-with open("Input.txt", 'r') as f:
-    commands = f.read().splitlines()
-# commands = []
-# for line in sys.stdin:
-#     commands.append(line.strip())
+# with open("Input.txt", 'r') as f:
+#     commands = f.read().splitlines()
+commands = []
+for line in sys.stdin:
+    commands.append(line.strip())
+    if line.strip()=="0101000000000000":
+        break
+# print(commands)
 # print(opcode)
 # flags={
 #     "V":0,
@@ -174,11 +178,12 @@ while pc<len(commands):
     #     break        
             
                 
-    for k in regValue.values():
-        bin = DecimalToBinary(int(k))
-        zeros = "0" * (16 - len(bin))
-        bin = zeros + bin
-        print(bin, end=" ")
+    for k, val in regValue.items():
+        if k in reg_codes_l:
+            bin = DecimalToBinary(int(val))
+            zeros = "0" * (16 - len(bin))
+            bin = zeros + bin
+            print(bin, end=" ")
     flg_str = "000000000000"
     for k in flags.keys():
         flg_str+=str(flags[k])
@@ -190,7 +195,7 @@ while pc<len(commands):
     else:
         continue        
 
-        
+# print(regValue)
 for c in commands:
     print(c)
 for _ in range(256-len(commands)):
