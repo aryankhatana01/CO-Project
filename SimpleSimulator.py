@@ -39,17 +39,24 @@ label=[]
 with open("Input.txt", 'r') as f:
     commands = f.read().splitlines()
 # print(opcode)
-flags={
+# flags={
+#     "V":0,
+#     "L":0,
+#     "G":0,
+#     "E":0,
+
+# }
+
+flagval=0
+pc=0
+while pc<len(commands):
+    flags={
     "V":0,
     "L":0,
     "G":0,
     "E":0,
 
-}
-
-flagval=0
-pc=0
-while pc<len(commands):
+    }
     pc_ = DecimalToBinary(int(pc))
     zeros = "0" * (8 - len(pc_))
     pc_ = zeros + pc_
@@ -65,7 +72,11 @@ while pc<len(commands):
     elif opcode=="10010":
         regValue[command[5:8]]=binaryToDecimal(command[8::])    
     elif opcode=="10011":
-        regValue[command[13:16]]=regValue[command[10:13]]
+        if command[10:13]=="111":
+            regValue[command[13:16]]=temp
+            
+        else:
+            regValue[command[13:16]]=regValue[command[10:13]]
     elif opcode=="10110":
         regValue[command[10:16]]=regValue[command[10:13]]*regValue[command[7:10]]
         if regValue[command[10:16]]>127:
@@ -124,6 +135,7 @@ while pc<len(commands):
             flags["G"]=1
         else:
             flags["L"]=1
+        print(flags)    
     elif opcode=="11111":
         zero="0"*8
         zero+=command[8:16]
@@ -156,8 +168,8 @@ while pc<len(commands):
                 label.append(zero)
             pc=binaryToDecimal(command[8:16])
             jmpflag=1
-    elif opcode=="01010":
-        break        
+    # elif opcode=="01010":
+    #     break        
             
                 
     for k in regValue.values():
@@ -169,6 +181,7 @@ while pc<len(commands):
     for k in flags.keys():
         flg_str+=str(flags[k])
     print(flg_str)
+    temp=flags["V"]*(2**3)+flags["L"]*(2**2)+flags["G"]*(2**1)+flags["E"]*1
                         
     if jmpflag==0:
         pc+=1
