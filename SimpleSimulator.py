@@ -206,9 +206,13 @@ while pc<len(commands):
         pc+=1
     else:
         continue        
-
+mem=dict(reversed(list(addr.items())))
 # print(regValue)
 for c in commands:
     print(c)
-for _ in range(256-len(commands)):
+for i in mem.keys():
+    # zero="0"*8
+    # zero+=i
+    print(decimalToBinary(mem[i]))
+for _ in range(256-len(commands)-len(addr)):
     print("0000000000000000")
