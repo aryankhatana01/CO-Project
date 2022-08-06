@@ -117,14 +117,14 @@ reg_codes_l = ["000","001","010","011","100","101","110"]
 reg = ["R0", "R1", "R2", "R3", "R4", "R5", "R6","FLAGS"]
 error=0
 label=[]
-with open("Input.txt", 'r') as f:
-    commands = f.read().splitlines()
+# with open("Input.txt", 'r') as f:
+#     commands = f.read().splitlines()
 
-# commands = []
-# for line in sys.stdin:
-#     commands.append(line.strip())
-#     if line.strip()=="0101000000000000":
-#         break
+commands = []
+for line in sys.stdin:
+    commands.append(line.strip())
+    if line.strip()=="0101000000000000":
+        break
 
 # print(commands)
 # print(opcode)
