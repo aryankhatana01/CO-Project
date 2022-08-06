@@ -49,8 +49,9 @@ for line in sys.stdin:
         break
 # print(commands)
 # print(opcode)
-flags={"V":0,"L":0,"G":0,"E":0}
 
+flags={"V":0,"L":0,"G":0,"E":0}
+addr_list=[]
 flagval=0
 pc=0
 while pc<len(commands):
@@ -141,6 +142,7 @@ while pc<len(commands):
         flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="10101":
         tempaddr=command[8:16]
+        # addr_list.append(tempaddr)
         # zero="0"*8
         # zero+=tempaddr
         
@@ -194,35 +196,39 @@ while pc<len(commands):
     #     break        
             
                 
-    # for k, val in regValue.items():
-    #     if k in reg_codes_l:
-    #         bin = DecimalToBinary(int(val))
-    #         zeros = "0" * (16 - len(bin))
-    #         bin = zeros + bin
-    #         print(bin, end=" ")
-    # flg_str = "000000000000"
-    # for k in flags.keys():
-    #     flg_str+=str(flags[k])
-    # print(flg_str)
+    for k, val in regValue.items():
+        if k in reg_codes_l:
+            bin_ = DecimalToBinary(int(val))
+            zeros = "0" * (16 - len(bin_))
+            bin_ = zeros + bin_
+            print(bin_, end=" ")
+    flg_str = "000000000000"
+    for k in flags.keys():
+        flg_str+=str(flags[k])
+    print(flg_str)
     temp=flags["V"]*(2**3)+flags["L"]*(2*2)+flags["G"]*(2**1)+flags["E"]*1
     yaxis.append(cycle)
     xaxis.append(pc)
-    cycle+=1                    
+    cycle+=1 
+
+                        
     if jmpflag==0:
         pc+=1
     else:
         continue        
-# mem=dict(reversed(list(addr.items())))
-# # print(regValue)
-# for c in commands:
-#     print(c)
-# for i in mem.keys():
-#     # zero="0"*8
-#     # zero+=i
-#     print(decimalToBinary(mem[i]))
-# for _ in range(256-len(commands)-len(addr)):
-#     print("0000000000000000")
-
+mem=dict(reversed(list(addr.items())))
+addr_list=addr_list[::-1]
+# print(regValue)
+for c in commands:
+    print(c)
+for i in mem.keys():
+    # zero="0"*8
+    # zero+=i
+    dectobin=decimalToBinary(mem[i])
+    zero=(16-len(dectobin))*"0"
+    print(zero+dectobin)
+for _ in range(256-len(commands)-len(addr)):
+    print("0000000000000000")
 plt.style.use("seaborn")
 plt.xlabel("Number of Cycles")
 plt.ylabel("Instances of memory access")
