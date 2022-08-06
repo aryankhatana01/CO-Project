@@ -45,8 +45,9 @@ for line in sys.stdin:
         break
 # print(commands)
 # print(opcode)
-flags={"V":0,"L":0,"G":0,"E":0}
 
+flags={"V":0,"L":0,"G":0,"E":0}
+addr_list=[]
 flagval=0
 pc=0
 while pc<len(commands):
@@ -137,6 +138,7 @@ while pc<len(commands):
         flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="10101":
         tempaddr=command[8:16]
+        # addr_list.append(tempaddr)
         # zero="0"*8
         # zero+=tempaddr
         
@@ -207,12 +209,15 @@ while pc<len(commands):
     else:
         continue        
 mem=dict(reversed(list(addr.items())))
+addr_list=addr_list[::-1]
 # print(regValue)
 for c in commands:
     print(c)
 for i in mem.keys():
     # zero="0"*8
     # zero+=i
-    print(decimalToBinary(mem[i]))
+    dectobin=decimalToBinary(mem[i])
+    zero=(16-len(dectobin))*"0"
+    print(zero+dectobin)
 for _ in range(256-len(commands)-len(addr)):
     print("0000000000000000")
