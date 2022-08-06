@@ -192,10 +192,10 @@ while pc<len(commands):
                 
     for k, val in regValue.items():
         if k in reg_codes_l:
-            bin = DecimalToBinary(int(val))
-            zeros = "0" * (16 - len(bin))
-            bin = zeros + bin
-            print(bin, end=" ")
+            bin_ = DecimalToBinary(int(val))
+            zeros = "0" * (16 - len(bin_))
+            bin_ = zeros + bin_
+            print(bin_, end=" ")
     flg_str = "000000000000"
     for k in flags.keys():
         flg_str+=str(flags[k])
