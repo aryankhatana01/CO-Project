@@ -272,6 +272,12 @@ while pc<len(commands):
         if regValue[command[13:16]]>127:
             regValue[command[13:16]]=127
             flags["V"]=1
+    
+    elif opcode=="00001":
+        regValue[command[13:16]]=regValue[command[10:13]]-regValue[command[7:10]]
+        if regValue[command[13:16]]<0:
+            regValue[command[13:16]]=0
+            flags["V"]=1
                 
     for k, val in regValue.items():
         # val_ = str(val)
