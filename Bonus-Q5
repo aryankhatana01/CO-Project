@@ -149,14 +149,40 @@ if cpu[1]=="Byte" or cpu[1]=="byte":
 elif cpu[1]=="Bit" or cpu[1]=="bit":
     val1=val1-3
 
-# if new_mem=="Bit Addressable Memory":
-#     val1=8*val1
-# elif new_mem=="Nibble Addressable Memory":
-#     val1=4*val1
-# elif new_mem=="Byte Addressable Memory":
-#     val1=val1
+if new_mem=="Bit Addressable Memory":
+    val1=8*val1
+elif new_mem=="Nibble Addressable Memory":
+    val1=4*val1
+elif new_mem=="Byte Addressable Memory":
+    val1=val1
 # else:
 #     val1=val1
+
+if(mem_type==new_mem):
+    print("The number of pins saved is :",0)
+else:
+    # if new_mem=="Word Addressable Memory" or "enhanced with word addressable memory":
+    #     cpu_sz=val_conv-val1
+    if mem_type=="Bit Addressable Memory":
+        if new_mem=="Nibble Addressable Memory":
+            cpu_sz=val_conv-2
+        elif new_mem=="Byte Addressable Memory":
+            cpu_sz=val_conv-3
+        elif new_mem=="Word Addressable Memory":
+            cpu_sz=val_conv
+    elif mem_type=="Nibble Addressable Memory":
+        if new_mem=="Bit Addressable Memory":
+            cpu_sz=val_conv+2
+        elif new_mem=="Byte Addressable Memory":
+            cpu_sz=val_conv-2
+    elif mem_type=="Byte Addressable Memory":
+        if new_mem=="Bit Addressable Memory":
+            cpu_sz=val_conv+3
+        elif new_mem=="Nibble Addressable Memory":
+            cpu_sz=val_conv+2
+    
+pins_saved=cpu_sz-tot_bits
+print(pins_saved)
 
 # if bit_flag==1:
 #     if(cpu[1]=="B"):
@@ -207,8 +233,52 @@ elif cpu[1]=="Bit" or cpu[1]=="bit":
 #     cpu_sz=pow-1
 #     print(cpu_sz)
     
-# # if(mem_type==new_mem):
-# #     print("The number of pins saved is :",0)
-# # else:
 # print(cpu_sz)
+print(' ')
+print("_______________________________Type 2_______________________________")
+print(' ')
+print("Please enter the size of cpu :")
+size_of_cpu=[str(i) for i in input().split()]
+soc=size_of_cpu[0]
+v1=0
+v2=0
+data={
+    0 : 'B',
+    10 : "kB",
+    20 : "MB",
+    30 : "GB",
+    40 : "TB",
+    50 : "PB"
+}
+print("Please enter the number of address pins :")
+add_pins=[str(i) for i in input().split()]
+adpns=add_pins[0]
+adpns=int(adpns)
+adp=0
+x1=0
+x2=1
+print("Please enter the type of memory :")
+m_type=str(input())
+if m_type!="Word Addressable Memory":
+    adp=adpns
+    while(adpns%10!=0):
+        adpns=adpns-1
+        v1=v1+1
+    v2=adp-v1
+    print("The size of the main memory is :",2**v1,data[v2])
+else:
+    sc=int(soc)/8
+    sc=int(sc)
+    while(x1!=sc):
+        x1=2**x2
+        x2=x2+1
+    adpns=adpns+(x2-1)
+    adp=adpns
+    while(adpns%10!=0):
+        adpns=adpns-1
+        v1=v1+1
+    v2=adp-v1
+    print("The size of the main memory is :",2**v1,data[v2])
 
+
+    
