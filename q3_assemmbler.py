@@ -770,7 +770,7 @@ else:
             zeroes = "0"*3
             # print(type(im))
             # print(z)
-            ans.append(a+zeroes+zeroes_exp+exp+zeroes_mantissa+mantissa)
+            ans.append(a+r+zeroes+zeroes_exp+exp+mantissa+zeroes_mantissa)
             
         
         elif instruction[0][-1]==":":
