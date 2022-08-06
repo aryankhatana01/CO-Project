@@ -45,24 +45,12 @@ for line in sys.stdin:
         break
 # print(commands)
 # print(opcode)
-# flags={
-#     "V":0,
-#     "L":0,
-#     "G":0,
-#     "E":0,
-
-# }
+flags={"V":0,"L":0,"G":0,"E":0}
 
 flagval=0
 pc=0
 while pc<len(commands):
-    flags={
-    "V":0,
-    "L":0,
-    "G":0,
-    "E":0,
-
-    }
+    
     pc_ = DecimalToBinary(int(pc))
     zeros = "0" * (8 - len(pc_))
     pc_ = zeros + pc_
@@ -71,69 +59,89 @@ while pc<len(commands):
     command=commands[pc]
     opcode=command[0:5]
     if opcode=="10000":
-        regValue[command[10:16]]=regValue[command[10:13]]+regValue[command[7:10]]
-        if regValue[command[10:16]]>127:
-            regValue[command[10:16]]=127
+        regValue[command[13:16]]=regValue[command[10:13]]+regValue[command[7:10]]
+        if regValue[command[13:16]]>127:
+            regValue[command[13:16]]=127
             flags["V"]=1
+        else:
+            flags={"V":0,"L":0,"G":0,"E":0,}    
     elif opcode=="10010":
-        regValue[command[5:8]]=binaryToDecimal(command[8::])    
+        regValue[command[5:8]]=binaryToDecimal(command[8::])
+        flags={"V":0,"L":0,"G":0,"E":0}    
     elif opcode=="10011":
         if command[10:13]=="111":
             regValue[command[13:16]]=temp
+            flags={"V":0,"L":0,"G":0,"E":0}
             
         else:
             regValue[command[13:16]]=regValue[command[10:13]]
+            flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="10110":
-        regValue[command[10:16]]=regValue[command[10:13]]*regValue[command[7:10]]
-        if regValue[command[10:16]]>127:
-            regValue[command[10:16]]=127
+        regValue[command[13:16]]=regValue[command[10:13]]*regValue[command[7:10]]
+        if regValue[command[13:16]]>127:
+            regValue[command[13:16]]=127
             flags["V"]=1
+        else:
+            flags={"V":0,"L":0,"G":0,"E":0}    
 
     elif opcode=="10001":
-        regValue[command[10:16]]=regValue[command[10:13]]-regValue[command[7:10]]
-        if regValue[command[10:16]]<0:
-            regValue[command[10:16]]=0
+        regValue[command[13:16]]=regValue[command[10:13]]-regValue[command[7:10]]
+        if regValue[command[13:16]]<0:
+            regValue[command[13:16]]=0
             flags["V"]=1
+        else:
+            flags={"V":0,"L":0,"G":0,"E":0}    
     elif opcode=="10111":
         q=regValue[command[10:13]]//regValue[command[13:16]] 
         rem=regValue[command[10:13]]%regValue[command[13:16]]
         regValue["000"]=q
         regValue["001"]=rem
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="11000":
         r1=command[5:8]
         im=command[8:16]
         regValue[r1]=regValue[r1]>>im
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="11001":
         r1=command[5:8]
         im=command[8:16]
         regValue[r1]=regValue[r1]<<im
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="11011":
-        regValue[command[10:16]]=regValue[command[10:13]]|regValue[command[7:10]]
-        if regValue[command[10:16]]>127:
-            regValue[command[10:16]]=127
+        regValue[command[13:16]]=regValue[command[10:13]]|regValue[command[7:10]]
+        if regValue[command[13:16]]>127:
+            regValue[command[13:16]]=127
+        flags={"V":0,"L":0,"G":0,"E":0}    
     elif opcode=="11100":
-        regValue[command[10:16]]=regValue[command[10:13]]&regValue[command[7:10]]
-        if regValue[command[10:16]]>127:
-            regValue[command[10:16]]=127
+        regValue[command[13:16]]=regValue[command[10:13]]&regValue[command[7:10]]
+        if regValue[command[13:16]]>127:
+            regValue[command[13:16]]=127
+        flags={"V":0,"L":0,"G":0,"E":0}   
     elif opcode=="11010":
-        regValue[command[10:16]]=regValue[command[10:13]]^regValue[command[7:10]]
-        if regValue[command[10:16]]>127:
-            regValue[command[10:16]]=127 
+        regValue[command[13:16]]=regValue[command[10:13]]^regValue[command[7:10]]
+        if regValue[command[13:16]]>127:
+            regValue[command[13:16]]=127
+        flags={"V":0,"L":0,"G":0,"E":0}
+ 
+            
     elif opcode=="11101":
         regValue[command[13:16]]=~regValue[command[10:13]]
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="10100":
         tempaddr=command[8:16]
-        zero="0"*8
-        zero+=tempaddr
-        if zero not in addr.keys():
-            addr[zero]=0
-        regValue[command[5:8]]=addr[zero]
+        # zero="0"*8
+        # zero+=tempaddr
+        if tempaddr not in addr.keys():
+            addr[tempaddr]=0
+        regValue[command[5:8]]=addr[tempaddr]
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="10101":
         tempaddr=command[8:16]
-        zero="0"*8
-        zero+=tempaddr
+        # zero="0"*8
+        # zero+=tempaddr
         
-        addr[zero]=regValue[command[5:8]]
+        addr[tempaddr]=regValue[command[5:8]]
+        flags={"V":0,"L":0,"G":0,"E":0}
     elif opcode=="11110":
         if regValue[command[10:13]]==regValue[command[13:16]]:
             flags["E"]=1
@@ -149,6 +157,7 @@ while pc<len(commands):
             label.append(zero)
         pc=binaryToDecimal(command[8:16])
         jmpflag=1
+        flags={"V":0,"L":0,"G":0,"E":0}
         continue
     elif opcode=="01100":
         if flags["L"]==1:
@@ -158,6 +167,7 @@ while pc<len(commands):
                 label.append(zero)
             pc=binaryToDecimal(command[8:16])
             jmpflag=1
+        flags={"V":0,"L":0,"G":0,"E":0}    
     elif opcode=="01101":
         if flags["G"]==1:
             zero="0"*8
@@ -166,6 +176,7 @@ while pc<len(commands):
                 label.append(zero)
             pc=binaryToDecimal(command[8:16])
             jmpflag=1
+        flags={"V":0,"L":0,"G":0,"E":0}    
     elif opcode=="01111":
         if flags["E"]==1:
             zero="0"*8
@@ -174,6 +185,7 @@ while pc<len(commands):
                 label.append(zero)
             pc=binaryToDecimal(command[8:16])
             jmpflag=1
+        flags={"V":0,"L":0,"G":0,"E":0}    
     # elif opcode=="01010":
     #     break        
             
